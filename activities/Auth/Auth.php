@@ -106,7 +106,7 @@ class Auth
                 if ($result) {
                     $request['verify_token'] = $randomToken;
                     $request['password'] = $this->hash($request['password']);
-                    $db->insert('users', array_keys($request), $request);
+                    $db->insert('users', ['email', 'password', 'username', 'verify_token'], [$request['email'], $request['password'], $request['username'], $request['verify_token']]);
                     $this->redirect('login');
                 }
 
