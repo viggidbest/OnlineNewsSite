@@ -1,0 +1,32 @@
+name: PHP Build & Test
+
+# Trigger on push to any branch (you can limit to main if you want)
+on:
+  push:
+    branches:
+      - '**'  # runs on all branches, change to 'main' if preferred
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'     # change to your PHP version
+        extensions: mbstring, intl
+        coverage: xdebug
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Run PHPUnit tests
+      run: ./vendor/bin/phpunit
